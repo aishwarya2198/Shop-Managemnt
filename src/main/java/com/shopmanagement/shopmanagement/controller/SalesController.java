@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
-@RestController
+@RestController("/sales")
 public class SalesController {
 
     private final SalesService salesService;
@@ -21,7 +21,7 @@ public class SalesController {
         this.salesService = salesService;
     }
 
-    @PostMapping("/item/{id}/addSales")
+    @PostMapping("/item/{id}")
     public ResponseEntity<ResponseDto> addSales(@PathVariable(value = "id") UUID id,
                                                 @RequestBody SalesDto sales) {
         return ResponseEntity.ok(new ResponseDto(true, "add item", salesService.addSales(id, sales)));
