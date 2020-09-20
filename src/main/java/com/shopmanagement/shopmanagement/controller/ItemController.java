@@ -19,29 +19,29 @@ public class ItemController {
     }
 
 
-    @PostMapping("/category/{cid}/addItem")
+    @PostMapping("/category/{cid}/item")
     public ResponseEntity<ResponseDto> addItem(@PathVariable(value = "cid") UUID cid,
                                                @RequestBody ItemDto item) {
         return ResponseEntity.ok(new ResponseDto(true, "add item", itemService.addItem(cid, item)));
     }
 
-    @GetMapping("/")
+    @GetMapping("/items")
     public ResponseEntity<ResponseDto> getItems() {
         return ResponseEntity.ok(new ResponseDto(true, "show item", itemService.getItems()));
     }
 
-    @GetMapping("/getItem")
+    @GetMapping("/item")
     public ResponseEntity<ResponseDto> getItem(@RequestParam UUID cid) {
         return ResponseEntity.ok(new ResponseDto(true, "show item", itemService.getItem(cid)));
     }
 
-    @DeleteMapping("deleteItem/{id}")
+    @DeleteMapping("/item/{id}")
     public ResponseEntity<ResponseDto> deleteItem(@PathVariable(value = "id") UUID id) {
         itemService.deleteItem(id);
         return ResponseEntity.ok(new ResponseDto(true, "item deleted"));
     }
 
-    @PatchMapping("/updateItem/{id}")
+    @PatchMapping("/item/{id}")
     public ResponseEntity<ResponseDto> updateItem(@PathVariable(value = "id") UUID id, @RequestBody ItemDto item) {
         return ResponseEntity.ok(new ResponseDto(true, "item updated", itemService.updateItem(id, item)));
     }

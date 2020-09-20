@@ -21,12 +21,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category addCategory(CategoryDto category) {
-        Category cat = new Category();
-        cat.setName(category.getName());
-        cat.setType(category.getType());
-        cat.setStatus(category.getStatus());
-        return categoryRepo.save(cat);
+    public Category addCategory(CategoryDto categoryDto) {
+        Category category = new Category();
+        category.setName(categoryDto.getName());
+        category.setType(categoryDto.getType());
+        category.setStatus(categoryDto.getStatus());
+        return categoryRepo.save(category);
     }
 
     @Override
@@ -40,14 +40,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category updateCategory(UUID cid, CategoryDto category) {
+    public Category updateCategory(UUID cid, CategoryDto categoryDto) {
         Optional<Category> categoryData = categoryRepo.findById(cid);
         categoryData.orElseThrow(() -> new ResourceNotFoundException("Category Id " + cid + " not found"));
-            Category _category = categoryData.get();
-            _category.setStatus(category.getStatus());
-
-            return categoryRepo.save(_category);
-
+        Category category = categoryData.get();
+        category.setStatus(categoryDto.getStatus());
+        return categoryRepo.save(category);
     }
 
     @Override

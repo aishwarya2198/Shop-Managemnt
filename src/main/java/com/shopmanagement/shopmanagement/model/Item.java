@@ -1,6 +1,7 @@
 package com.shopmanagement.shopmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.shopmanagement.shopmanagement.commons.Status;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -19,8 +20,13 @@ public class Item {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "amount")
     private float amount;
+
+    @Column(name = "quantity")
     private int quantity;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

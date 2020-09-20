@@ -1,4 +1,4 @@
-package com.shopmanagement.shopmanagement.model;
+package com.shopmanagement.shopmanagement.commons;
 
 public enum Type {
 

@@ -1,6 +1,6 @@
 package com.shopmanagement.shopmanagement.dto;
 
-import com.shopmanagement.shopmanagement.model.Status;
+import com.shopmanagement.shopmanagement.commons.Status;
 
 public class ItemDto {
 

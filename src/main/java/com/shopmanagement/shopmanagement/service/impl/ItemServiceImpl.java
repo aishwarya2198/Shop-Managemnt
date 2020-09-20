@@ -2,6 +2,7 @@ package com.shopmanagement.shopmanagement.service.impl;
 
 import com.shopmanagement.shopmanagement.dao.ItemRepo;
 import com.shopmanagement.shopmanagement.dto.ItemDto;
+import com.shopmanagement.shopmanagement.exception.BadRequestException;
 import com.shopmanagement.shopmanagement.exception.ResourceNotFoundException;
 import com.shopmanagement.shopmanagement.model.Item;
 import com.shopmanagement.shopmanagement.service.CategoryService;
@@ -25,16 +26,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item addItem(UUID cid, ItemDto item) {
-        Item it = new Item();
-        it.setName(item.getName());
-        it.setAmount(item.getAmount());
-        it.setQuantity(item.getQuantity());
-        it.setStatus(item.getStatus());
-        it.setCategory(categoryService.getCategoryByCid(cid));
-        return itemRepo.save(it);
+    public Item addItem(UUID cid, ItemDto itemDto) {
+        Item item = new Item();
+        item.setName(itemDto.getName());
+        item.setAmount(itemDto.getAmount());
+        item.setQuantity(itemDto.getQuantity());
+        item.setStatus(itemDto.getStatus());
+        item.setCategory(categoryService.getCategoryByCid(cid));
+        return itemRepo.save(item);
     }
-
 
     @Override
     public List<Item> getItems() {
@@ -43,31 +43,29 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> getItem(UUID cid) {
-            List<Item> itemList = itemRepo.findByCategoryCid(cid);
-            if(itemList.isEmpty()){
-                throw new ResourceNotFoundException("Category Id "+cid+" not found");
-            }
-            return itemList;
-
+        List<Item> itemList = itemRepo.findByCategoryCid(cid);
+        if(itemList.isEmpty()){
+            throw new ResourceNotFoundException("Category Id "+cid+" not found");
+        }
+        return itemList;
     }
 
     @Override
     public void deleteItem(UUID id) {
-
         itemRepo.deleteById(id);
     }
 
     @Override
-    public Item updateItem(UUID id, ItemDto item) {
+    public Item updateItem(UUID id, ItemDto itemDto) {
         Optional<Item> itemData = itemRepo.findById(id);
         itemData.orElseThrow(() -> new ResourceNotFoundException("Id " + id + " not found"));
-            Item _item = itemData.get();
-            int itemQuantity = _item.getQuantity() + item.getQuantity();
-            if(itemQuantity < 0){
-                throw new ResourceNotFoundException("Quantity cannot be negative");
-            }
-            _item.setQuantity(itemQuantity);
-            return itemRepo.save(_item);
+        Item item = itemData.get();
+        int itemQuantity = item.getQuantity() + itemDto.getQuantity();
+        if(itemQuantity < 0){
+            throw new BadRequestException("Quantity cannot be negative");
+        }
+        item.setQuantity(itemQuantity);
+        return itemRepo.save(item);
     }
 
     @Override

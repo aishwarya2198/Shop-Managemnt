@@ -1,6 +1,7 @@
 package com.shopmanagement.shopmanagement.aop;
 
 import com.shopmanagement.shopmanagement.dto.ResponseDto;
+import com.shopmanagement.shopmanagement.exception.BadRequestException;
 import com.shopmanagement.shopmanagement.exception.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,8 +18,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class CustomisedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ResponseDto> handleAnyException(ResourceNotFoundException ex, WebRequest request) {
+    public ResponseEntity<ResponseDto> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(false, ex.getLocalizedMessage());
         return new ResponseEntity<>(responseDto, new HttpHeaders(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ResponseDto> handleBadRequestException(BadRequestException badRequestException, WebRequest request){
+        ResponseDto responseDto = new ResponseDto(false, badRequestException.getLocalizedMessage());
+        return new ResponseEntity<>(responseDto, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 }

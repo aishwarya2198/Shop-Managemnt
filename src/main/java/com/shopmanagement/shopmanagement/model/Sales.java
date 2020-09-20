@@ -27,7 +27,10 @@ public class Sales {
     @JsonIgnore
     private Item item;
 
+    @Column(name = "amount")
     private float amount;
+
+    @Column(name = "quantity")
     private int quantity;
 
     public UUID getSid() {

@@ -1,7 +1,7 @@
 package com.shopmanagement.shopmanagement.dto;
 
-import com.shopmanagement.shopmanagement.model.Status;
-import com.shopmanagement.shopmanagement.model.Type;
+import com.shopmanagement.shopmanagement.commons.Status;
+import com.shopmanagement.shopmanagement.commons.Type;
 
 public class CategoryDto {
 

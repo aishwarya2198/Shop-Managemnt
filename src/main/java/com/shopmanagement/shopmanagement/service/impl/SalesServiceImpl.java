@@ -2,12 +2,16 @@ package com.shopmanagement.shopmanagement.service.impl;
 
 import com.shopmanagement.shopmanagement.dao.SalesRepo;
 import com.shopmanagement.shopmanagement.dto.SalesDto;
+import com.shopmanagement.shopmanagement.exception.BadRequestException;
+import com.shopmanagement.shopmanagement.exception.ResourceNotFoundException;
 import com.shopmanagement.shopmanagement.model.Item;
 import com.shopmanagement.shopmanagement.model.Sales;
 import com.shopmanagement.shopmanagement.service.ItemService;
 import com.shopmanagement.shopmanagement.service.SalesService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -32,5 +36,35 @@ public class SalesServiceImpl implements SalesService {
         return salesRepo.save(sale);
     }
 
+    @Override
+    public List<Sales> getSales(){
+        return salesRepo.findAll();
+    }
 
+    @Override
+    public List<Sales> getSale(UUID id){
+        List<Sales> salesList = salesRepo.findByItemId(id);
+        if(salesList.isEmpty()){
+            throw new ResourceNotFoundException("Id "+id+" not found");
+        }
+        return salesList;
+    }
+
+    @Override
+    public void deleteSales(UUID sid){
+        salesRepo.deleteById(sid);
+    }
+
+    @Override
+    public Sales updateSales(UUID sid, SalesDto salesDto){
+        Optional<Sales> salesData = salesRepo.findById(sid);
+        salesData.orElseThrow(() -> new ResourceNotFoundException("Sales Id " + sid + " not found"));
+        Sales sales = salesData.get();
+        int salesQuantity = sales.getQuantity() - salesDto.getQuantity();
+        if(salesQuantity < 0){
+            throw new BadRequestException("Quantity cannot be negative");
+        }
+        sales.setQuantity(salesQuantity);
+        return salesRepo.save(sales);
+    }
 }

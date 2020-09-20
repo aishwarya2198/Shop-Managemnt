@@ -17,12 +17,12 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping("/addCategory")
+    @PostMapping("/category")
     public ResponseEntity<ResponseDto> addCategory(@RequestBody CategoryDto category) {
         return ResponseEntity.ok(new ResponseDto(true, "add category", categoryService.addCategory(category)));
     }
 
-    @GetMapping("/category")
+    @GetMapping("/categories")
     public ResponseEntity<ResponseDto> getCategory() {
         return ResponseEntity.ok(new ResponseDto(true, "show category", categoryService.getCategory()));
     }

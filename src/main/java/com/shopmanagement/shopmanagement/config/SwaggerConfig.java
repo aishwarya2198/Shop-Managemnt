@@ -29,7 +29,7 @@ public class SwaggerConfig {
     private ApiInfo metaData() {
         return new ApiInfo(
                 "Shop Management",
-                "desctription",
+                "description",
                 "1.0",
                 "https://example.com",
                 new Contact("Aishwarya", "", ""),

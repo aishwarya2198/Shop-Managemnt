@@ -1,5 +1,7 @@
 package com.shopmanagement.shopmanagement.model;
 
+import com.shopmanagement.shopmanagement.commons.Status;
+import com.shopmanagement.shopmanagement.commons.Type;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -17,6 +19,7 @@ public class Category {
     @Column(name = "cid", updatable = false, nullable = false)
     private UUID cid;
 
+    @Column(name = "name")
     private String name;
 
     @Enumerated(EnumType.STRING)
@@ -63,17 +66,5 @@ public class Category {
     public String toString() {
         return "Category [cid=" + cid + ", name=" + name + ", type=" + type + ", status=" + status + "]";
     }
-
-    /**
-     * this is a string {test},{test1}
-     * {} /error
-     * }
-     * {{deepak}} - deepak
-     * {{singh} -singh
-     * }}}}}}{{{{{ - no error
-     * {test{}}}}} - test
-     *
-     * O(n)
-     */
 
 }
