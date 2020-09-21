@@ -2,6 +2,7 @@ package com.shopmanagement.shopmanagement.service.impl;
 
 import com.shopmanagement.shopmanagement.dao.CategoryRepo;
 import com.shopmanagement.shopmanagement.dto.CategoryDto;
+import com.shopmanagement.shopmanagement.exception.BadRequestException;
 import com.shopmanagement.shopmanagement.exception.ResourceNotFoundException;
 import com.shopmanagement.shopmanagement.model.Category;
 import com.shopmanagement.shopmanagement.service.CategoryService;
@@ -24,8 +25,18 @@ public class CategoryServiceImpl implements CategoryService {
     public Category addCategory(CategoryDto categoryDto) {
         Category category = new Category();
         category.setName(categoryDto.getName());
-        category.setType(categoryDto.getType());
-        category.setStatus(categoryDto.getStatus());
+        if(categoryDto.getType().equals("ESSENTIAL") || categoryDto.getType().equals("NONESSENTIAL")) {
+            category.setType(categoryDto.getType());
+        }
+        else {
+            throw new BadRequestException("Please check the type");
+        }
+        if(categoryDto.getStatus().equals("ACCEPT") || categoryDto.getStatus().equals("UNACCEPTABLE")){
+            category.setStatus(categoryDto.getStatus());
+        }
+        else {
+            throw new BadRequestException("Please check the status");
+        }
         return categoryRepo.save(category);
     }
 
@@ -44,7 +55,12 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> categoryData = categoryRepo.findById(cid);
         categoryData.orElseThrow(() -> new ResourceNotFoundException("Category Id " + cid + " not found"));
         Category category = categoryData.get();
-        category.setStatus(categoryDto.getStatus());
+        if(categoryDto.getStatus()!=null){
+        category.setStatus(categoryDto.getStatus());}
+        if (categoryDto.getName() != null){
+        category.setName(categoryDto.getName());}
+        if(categoryDto.getType()!=null){
+        category.setType(categoryDto.getType());}
         return categoryRepo.save(category);
     }
 

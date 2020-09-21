@@ -31,7 +31,12 @@ public class ItemServiceImpl implements ItemService {
         item.setName(itemDto.getName());
         item.setAmount(itemDto.getAmount());
         item.setQuantity(itemDto.getQuantity());
-        item.setStatus(itemDto.getStatus());
+        if(itemDto.getStatus().equals("ACCEPT") || itemDto.getStatus().equals("UNACCEPTABLE")) {
+            item.setStatus(itemDto.getStatus());
+        }
+        else {
+            throw new BadRequestException("Please check the status");
+        }
         item.setCategory(categoryService.getCategoryByCid(cid));
         return itemRepo.save(item);
     }
@@ -64,7 +69,10 @@ public class ItemServiceImpl implements ItemService {
         if(itemQuantity < 0){
             throw new BadRequestException("Quantity cannot be negative");
         }
-        item.setQuantity(itemQuantity);
+        if (itemDto.getQuantity() != 0){ item.setQuantity(itemQuantity);}
+        if (itemDto.getName() != null){ item.setName(itemDto.getName());}
+        if (itemDto.getStatus()!=null){ item.setStatus(itemDto.getStatus());}
+        if (itemDto.getAmount() != 0){ item.setAmount(itemDto.getAmount());}
         return itemRepo.save(item);
     }
 

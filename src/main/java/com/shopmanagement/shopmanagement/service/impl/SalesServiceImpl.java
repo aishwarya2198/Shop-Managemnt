@@ -60,11 +60,12 @@ public class SalesServiceImpl implements SalesService {
         Optional<Sales> salesData = salesRepo.findById(sid);
         salesData.orElseThrow(() -> new ResourceNotFoundException("Sales Id " + sid + " not found"));
         Sales sales = salesData.get();
-        int salesQuantity = sales.getQuantity() - salesDto.getQuantity();
+        int salesQuantity = sales.getQuantity() + salesDto.getQuantity();
         if(salesQuantity < 0){
             throw new BadRequestException("Quantity cannot be negative");
         }
-        sales.setQuantity(salesQuantity);
+        if (salesDto.getQuantity() != 0){ sales.setQuantity(salesQuantity);}
+        if (salesDto.getAmount() != 0){ sales.setAmount(salesDto.getAmount());}
         return salesRepo.save(sales);
     }
 }
